@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 
 //printing
@@ -62,6 +63,25 @@ int cd(char **cmd) {
 }
 
 //end built-in
+
+int handle_cd(char **cmd) {
+	if (strcmp(cmd[0], "cd") == 0)
+		return cd(cmd);
+	return (-1);
+}
+
+void execute_piped_commands(char **cmd, char **env) {
+	int fd[2];
+	int i, j, last;
+	int read_from, write_to, backup_in, backup_out;
+
+	read_from = dup(STDIN_FILENO);
+	backup_in = dup(STDIN_FILENO);
+	backup_out = dup(STDOUT_FILENO);
+
+	if (read_from == -1 || backup_in == -1 || backup_out == -1)
+		error();
+}
 
 int main(void) {
 	print_err("Hello");
